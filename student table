@@ -1,0 +1,10 @@
+create table student(
+s_id INT NOT NULL,
+batch varchar(5),
+Cgpa DECIMAL (4,4),
+Sgpa DECIMAL(4,4),
+l_id INT,
+PRIMARY KEY(s_id),
+FOREIGN KEY (s_id) REFERENCES user(u_id),
+FOREIGN KEY (l_id) REFERENCES lecturer (l_id)
+);
