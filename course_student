@@ -1,0 +1,8 @@
+CREATE TABLE course_student (
+       c_id INT,
+       s_id INT,
+       PRIMARY KEY (c_id, s_id),
+       FOREIGN KEY (c_id) REFERENCES course(c_id),
+       FOREIGN KEY (s_id) REFERENCES student(s_id)
+    );
+
