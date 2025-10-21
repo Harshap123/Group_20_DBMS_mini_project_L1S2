@@ -1,0 +1,11 @@
+CREATE TABLE course (
+     c_id INT NOT NULL,
+     course_type VARCHAR(20),
+     course_code VARCHAR(10),
+     credit DECIMAL(3,1),
+     l_id INT,
+     d_id INT,
+     PRIMARY KEY (c_id),
+     FOREIGN KEY (l_id) REFERENCES lecturer(l_id),
+      FOREIGN KEY (d_id) REFERENCES department(d_id)
+     );
