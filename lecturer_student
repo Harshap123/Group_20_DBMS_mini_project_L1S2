@@ -1,0 +1,7 @@
+CREATE TABLE lecturer_student (
+   l_id INT,
+   s_id INT,
+   PRIMARY KEY (l_id, s_id),
+   FOREIGN KEY (l_id) REFERENCES lecturer(l_id),
+   FOREIGN KEY (s_id) REFERENCES student(s_id)
+    );
