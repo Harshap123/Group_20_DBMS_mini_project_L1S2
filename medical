@@ -1,0 +1,10 @@
+CREATE TABLE medical (
+  medi_id INT NOT NULL,
+  s_date DATE,
+  e_date DATE,
+  description VARCHAR(255),
+  s_id INT,
+  PRIMARY KEY (medi_id),
+  FOREIGN KEY (s_id) REFERENCES student(s_id)
+);
+
