@@ -1,10 +1,19 @@
-CREATE TABLE medical (
-  medi_id INT NOT NULL,
-  s_date DATE,
-  e_date DATE,
-  description VARCHAR(255),
-  s_id INT,
-  PRIMARY KEY (medi_id),
-  FOREIGN KEY (s_id) REFERENCES student(s_id)
+CREATE TABLE medical(
+Medi_id VARCHAR(10) NOT NULL,
+S_date DATE,
+E_date DATE,
+Description VARCHAR (50),
+Approve_status VARCHAR (3),
+
+Stu_id VARCHAR (10),
+
+
+PRIMARY KEY(Medi_id),
+
+FOREIGN KEY (Stu_id) REFERENCES student (Stu_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
 );
+
+
 
