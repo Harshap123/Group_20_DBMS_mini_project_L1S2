@@ -3,3 +3,25 @@ CREATE DATABASE faculty_of_technology;
 
 /* Switch to the newly created database */
 USE faculty_of_technology;
+
+/* Create a table  lecturer*/
+CREATE TABLE lecturer(
+Lec_id VARCHAR(10) NOT NULL,
+Designation VARCHAR(50),
+Dep_id VARCHAR(50),
+PRIMARY KEY(Lec_id),
+FOREIGN KEY (Dep_id) REFERENCES department (Dep_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+/* add foreign key department to lecturer table */
+CREATE TABLE lecturer(
+Lec_id VARCHAR(10) NOT NULL,
+Designation VARCHAR(50),
+Dep_id VARCHAR(50),
+PRIMARY KEY(Lec_id),
+FOREIGN KEY (Dep_id) REFERENCES department (Dep_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
