@@ -1,1 +1,5 @@
+/* Create a new database named 'faculty_of_technology' */
 CREATE DATABASE faculty_of_technology;
+
+/* Switch to the newly created database */
+USE faculty_of_technology;
