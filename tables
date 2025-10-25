@@ -1,0 +1,50 @@
+//course table
+
+CREATE TABLE course
+(
+    Course_id VARCHAR(10),
+    Type ENUM('Theory','Practical','Both') DEFAULT 'Theory',
+    C_code VARCHAR(10),
+    Credit INT,
+    C_name VARCHAR(50),
+    Lec_id VARCHAR(10),
+    Dep_id VARCHAR(10),
+    PRIMARY KEY(Course_id),
+    FOREIGN KEY (Lec_id) REFERENCES lecturer (Lec_id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    FOREIGN KEY (Dep_id) REFERENCES department (Dep_id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+
+//student_course
+
+CREATE TABLE student_course
+(
+Course_id VARCHAR(10),
+Stu_id VARCHAR(10),
+PRIMARY KEY(Course_id,Stu_id),
+FOREIGN KEY (Course_id) REFERENCES course (Course_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE,
+FOREIGN KEY (Stu_id) REFERENCES student (Stu_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+//session table
+
+CREATE TABLE session
+(
+Session_id VARCHAR(10),
+Session_num INT DEFAULT 0,
+Date DATE,
+Duration TIME,
+Course_id VARCHAR(10),
+PRIMARY KEY(Session_id),
+FOREIGN KEY (Course_id) REFERENCES course (Course_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
