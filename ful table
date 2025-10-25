@@ -148,6 +148,27 @@ INSERT INTO tec_officer (To_id, Special_area) VALUES
 ('T005', 'Biotechnology Lab');
 
 
+CREATE TABLE admin
+(
+Admin_id VARCHAR(10),
+Assigned_dep VARCHAR(50),
+Access_level VARCHAR(20),
+PRIMARY KEY(Admin_id),
+FOREIGN KEY (Admin_id) REFERENCES user (User_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+INSERT INTO admin
+(Admin_id,Assigned_dep,Access_level) 
+VALUES
+('adm01','Information and communication technology','super_admin');
+
+
+
+
+
+
 
 
 
