@@ -25,3 +25,80 @@ FOREIGN KEY (Dep_id) REFERENCES department (Dep_id)
 ON UPDATE CASCADE
 ON DELETE CASCADE
 );
+
+
+/* Create a table  admin*/
+CREATE TABLE admin
+(
+Admin_id VARCHAR(10),
+Assigned_dep VARCHAR(50),
+Access_level VARCHAR(20),
+PRIMARY KEY(Admin_id),
+FOREIGN KEY (Admin_id) REFERENCES user (User_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+/* Create a table  attendance*/
+CREATE TABLE attendance
+(
+Attend_id VARCHAR(10),
+Status ENUM('Present','Absent') DEFAULT 'Absent',
+Session_id VARCHAR(10),
+Stu_id VARCHAR (10),
+To_id VARCHAR (10),
+PRIMARY KEY(Attend_id),
+FOREIGN KEY (Session_id) REFERENCES session (Session_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE,
+FOREIGN KEY (Stu_id) REFERENCES student (Stu_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE,
+FOREIGN KEY (To_id) REFERENCES tec_officer (To_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+/* Create a table  marks*/
+CREATE TABLE marks
+(
+Mark_id VARCHAR(10),
+Quizz01 DECIMAL(5,2) DEFAULT 0 CHECK (Quizz01 BETWEEN 0 AND 100),
+Quizz02 DECIMAL(5,2) DEFAULT 0 CHECK (Quizz02 BETWEEN 0 AND 100),
+Quizz03 DECIMAL(5,2) DEFAULT 0 CHECK (Quizz03 BETWEEN 0 AND 100),
+Assesment DECIMAL(5,2) DEFAULT 0 CHECK (Assesment BETWEEN 0 AND 100),
+Mid_practical DECIMAL(5,2) DEFAULT 0 CHECK (Mid_practical BETWEEN 0 AND 100),
+Mid_theory DECIMAL(5,2) DEFAULT 0 CHECK (Mid_theory BETWEEN 0 AND 100),
+Final_practical DECIMAL(5,2) DEFAULT 0 CHECK (Final_practical BETWEEN 0 AND 100),
+Final_theory DECIMAL(5,2) DEFAULT 0 CHECK (Final_theory BETWEEN 0 AND 100),
+Stu_id VARCHAR(10),
+Course_id VARCHAR(10),
+PRIMARY KEY(Mark_id),
+FOREIGN KEY (Stu_id) REFERENCES student (Stu_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE,
+FOREIGN KEY (Course_id) REFERENCES course (Course_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+/* Create a table  medical*/
+CREATE TABLE medical
+(
+Medi_id VARCHAR(10),
+S_date DATE,
+E_date DATE,
+Description VARCHAR (50),
+Approve_status ENUM('Approved', 'Pending', 'Rejected') DEFAULT 'Pending',
+Stu_id VARCHAR (10),
+Session_id VARCHAR(10),
+PRIMARY KEY(Medi_id),
+FOREIGN KEY (Stu_id) REFERENCES student (Stu_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE,
+FOREIGN KEY (Session_id) REFERENCES session (Session_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+
