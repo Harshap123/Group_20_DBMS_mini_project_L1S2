@@ -159,13 +159,21 @@ ON UPDATE CASCADE
 ON DELETE CASCADE
 );
 
-INSERT INTO admin
-(Admin_id,Assigned_dep,Access_level) 
-VALUES
-('adm01','Information and communication technology','super_admin');
+INSERT INTO admin VALUES 
+('adm01', 'Faculty of Technology', 'Super');
 
+CREATE TABLE dean
+(
+Dean_id VARCHAR(10),
+S_date DATE,
+PRIMARY KEY(Dean_id),
+FOREIGN KEY (Dean_id) REFERENCES user (User_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
 
-
+INSERT INTO dean VALUES 
+('den01', '2020-01-01');
 
 
 
