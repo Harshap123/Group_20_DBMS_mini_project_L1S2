@@ -324,3 +324,31 @@ BEGIN
     ORDER BY C_code;
 END$$
 DELIMITER ;
+
+/*create user account*/
+
+CREATE USER 'admin_user'@'localhost' IDENTIFIED BY 'admin123';
+GRANT ALL PRIVILEGES ON fot_db.* TO 'admin_user'@'localhost' WITH GRANT OPTION;
+
+
+CREATE USER 'dean_user'@'localhost' IDENTIFIED BY 'dean456';
+GRANT ALL PRIVILEGES ON fot_db.* TO 'dean_user'@'localhost';
+
+CREATE USER 'lecturer_user'@'localhost' IDENTIFIED BY 'lec789';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER 
+ON fot_db.* TO 'lecturer_user'@'localhost';
+
+
+CREATE USER 'to_user'@'localhost' IDENTIFIED BY 'to505';
+GRANT SELECT, INSERT, UPDATE ON fot_db.attendance TO 'to_user'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON fot_db.session TO 'to_user'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON fot_db.medical TO 'to_user'@'localhost';
+GRANT SELECT ON fot_db.vw_attendance TO 'to_user'@'localhost';
+
+
+CREATE USER 'student_user'@'localhost' IDENTIFIED BY 'stu001';
+GRANT SELECT ON fot_db.vw_grades TO 'student_user'@'localhost';
+GRANT SELECT ON fot_db.vw_gpa TO 'student_user'@'localhost';
+GRANT SELECT ON fot_db.vw_attendance TO 'student_user'@'localhost';
+
+FLUSH PRIVILEGES;
