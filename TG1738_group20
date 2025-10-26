@@ -218,3 +218,109 @@ SELECT
         ELSE 0.0
     END AS Grade_Point
 FROM view_marks vm;
+
+/*create a procedure  attendance_categories*/
+DELIMITER $$
+CREATE PROCEDURE attendance_categories(IN p_course_code VARCHAR(10))
+BEGIN
+    SELECT 
+        CASE 
+            WHEN Attendance_Percentage >= 80 AND Medical_Count = 0 THEN '>= 80% (No Medical)'
+            WHEN Attendance_Percentage >= 80 AND Medical_Count > 0 THEN '>= 80% (With Medical)'
+            WHEN Attendance_Percentage < 80 AND Medical_Count = 0 THEN '< 80% (No Medical)'
+            WHEN Attendance_Percentage < 80 AND Medical_Count > 0 THEN '< 80% (With Medical)'
+        END AS Category,
+        COUNT(*) AS Student_Count,
+        GROUP_CONCAT(Reg_no ORDER BY Reg_no SEPARATOR ', ') AS Students
+    FROM vw_attendance
+    WHERE C_code = p_course_code
+    AND Session_type = 'Combined'
+    GROUP BY Category;
+END$$
+DELIMITER ;
+
+
+/*create a procedure get_marks*/
+
+DELIMITER $$
+CREATE PROCEDURE get_marks(
+    IN p_course_code VARCHAR(10),
+    IN p_reg_no CHAR(12),
+    IN p_detail_level VARCHAR(10)   -- 'CA', 'FINAL', or 'COMPLETE'
+)
+BEGIN
+    IF p_detail_level = 'CA' THEN
+        SELECT 
+            Reg_no, Name, C_code, C_name,
+            Best_Quiz_Avg, Assesment, Mid_practical, Mid_theory,
+            CA_Marks, CA_Eligibility
+        FROM vw_marks
+        WHERE (p_course_code IS NULL OR C_code = p_course_code)
+        AND (p_reg_no IS NULL OR Reg_no = p_reg_no)
+        ORDER BY Reg_no, C_code;
+        
+    ELSEIF p_detail_level = 'FINAL' THEN
+        SELECT 
+            Reg_no, Name, C_code, C_name,
+            CA_Marks, Final_practical, Final_theory, Final_Marks
+        FROM vw_marks
+        WHERE (p_course_code IS NULL OR C_code = p_course_code)
+        AND (p_reg_no IS NULL OR Reg_no = p_reg_no)
+        ORDER BY Reg_no, C_code;
+        
+    ELSE
+        SELECT 
+            Reg_no, Name, Status, C_code, C_name,
+            Quizz01, Quizz02, Quizz03, Best_Quiz_Avg,
+            Assesment, Mid_practical, Mid_theory,
+            CA_Marks, CA_Eligibility,
+            Final_practical, Final_theory, Final_Marks
+        FROM vw_marks
+        WHERE (p_course_code IS NULL OR C_code = p_course_code)
+        AND (p_reg_no IS NULL OR Reg_no = p_reg_no)
+        ORDER BY Reg_no, C_code;
+    END IF;
+END$$
+DELIMITER ;
+
+/*create a procedure for special grades*/
+DELIMITER $$
+CREATE PROCEDURE special_grades(IN p_course_code VARCHAR(10))
+BEGIN
+    SELECT 
+        Grade,
+        COUNT(*) AS Count,
+        GROUP_CONCAT(Reg_no ORDER BY Reg_no SEPARATOR ', ') AS Students
+    FROM vw_grades
+    WHERE (p_course_code IS NULL OR C_code = p_course_code)
+    AND Grade IN ('WH', 'MC')
+    GROUP BY Grade;
+END$$
+DELIMITER ;
+
+/*create a procedure for complete report*/
+DELIMITER $$
+CREATE PROCEDURE complete_report(IN p_reg_no CHAR(12))
+BEGIN
+    SELECT 'ATTENDANCE SUMMARY' AS Section;
+    SELECT C_code, C_name, Session_type, Attendance_Percentage, Eligibility
+    FROM vw_attendance
+    WHERE Reg_no = p_reg_no AND Session_Date IS NULL
+    ORDER BY C_code, Session_type;
+    
+    SELECT 'MARKS AND GRADES' AS Section;
+    SELECT C_code, C_name, CA_Marks, Final_Marks, Grade, Grade_Point
+    FROM vw_grades
+    WHERE Reg_no = p_reg_no
+    ORDER BY C_code;
+    
+    SELECT 'GPA SUMMARY' AS Section;
+    SELECT * FROM vw_gpa WHERE Reg_no = p_reg_no;
+    
+    SELECT 'ELIGIBILITY STATUS' AS Section;
+    SELECT C_code, C_name, Overall_Eligibility
+    FROM vw_eligibility
+    WHERE Reg_no = p_reg_no
+    ORDER BY C_code;
+END$$
+DELIMITER ;
