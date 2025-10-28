@@ -1,0 +1,354 @@
+/* Create a new database named 'faculty_of_technology' */
+CREATE DATABASE faculty_of_technology;
+
+/* Switch to the newly created database */
+USE faculty_of_technology;
+
+/* Create a table  lecturer*/
+CREATE TABLE lecturer(
+Lec_id VARCHAR(10) NOT NULL,
+Designation VARCHAR(50),
+Dep_id VARCHAR(50),
+PRIMARY KEY(Lec_id),
+FOREIGN KEY (Dep_id) REFERENCES department (Dep_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+/* add foreign key department to lecturer table */
+CREATE TABLE lecturer(
+Lec_id VARCHAR(10) NOT NULL,
+Designation VARCHAR(50),
+Dep_id VARCHAR(50),
+PRIMARY KEY(Lec_id),
+FOREIGN KEY (Dep_id) REFERENCES department (Dep_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+
+/* Create a table  admin*/
+CREATE TABLE admin
+(
+Admin_id VARCHAR(10),
+Assigned_dep VARCHAR(50),
+Access_level VARCHAR(20),
+PRIMARY KEY(Admin_id),
+FOREIGN KEY (Admin_id) REFERENCES user (User_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+/* Create a table  attendance*/
+CREATE TABLE attendance
+(
+Attend_id VARCHAR(10),
+Status ENUM('Present','Absent') DEFAULT 'Absent',
+Session_id VARCHAR(10),
+Stu_id VARCHAR (10),
+To_id VARCHAR (10),
+PRIMARY KEY(Attend_id),
+FOREIGN KEY (Session_id) REFERENCES session (Session_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE,
+FOREIGN KEY (Stu_id) REFERENCES student (Stu_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE,
+FOREIGN KEY (To_id) REFERENCES tec_officer (To_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+/* Create a table  marks*/
+CREATE TABLE marks
+(
+Mark_id VARCHAR(10),
+Quizz01 DECIMAL(5,2) DEFAULT 0 CHECK (Quizz01 BETWEEN 0 AND 100),
+Quizz02 DECIMAL(5,2) DEFAULT 0 CHECK (Quizz02 BETWEEN 0 AND 100),
+Quizz03 DECIMAL(5,2) DEFAULT 0 CHECK (Quizz03 BETWEEN 0 AND 100),
+Assesment DECIMAL(5,2) DEFAULT 0 CHECK (Assesment BETWEEN 0 AND 100),
+Mid_practical DECIMAL(5,2) DEFAULT 0 CHECK (Mid_practical BETWEEN 0 AND 100),
+Mid_theory DECIMAL(5,2) DEFAULT 0 CHECK (Mid_theory BETWEEN 0 AND 100),
+Final_practical DECIMAL(5,2) DEFAULT 0 CHECK (Final_practical BETWEEN 0 AND 100),
+Final_theory DECIMAL(5,2) DEFAULT 0 CHECK (Final_theory BETWEEN 0 AND 100),
+Stu_id VARCHAR(10),
+Course_id VARCHAR(10),
+PRIMARY KEY(Mark_id),
+FOREIGN KEY (Stu_id) REFERENCES student (Stu_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE,
+FOREIGN KEY (Course_id) REFERENCES course (Course_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+/* Create a table  medical*/
+CREATE TABLE medical
+(
+Medi_id VARCHAR(10),
+S_date DATE,
+E_date DATE,
+Description VARCHAR (50),
+Approve_status ENUM('Approved', 'Pending', 'Rejected') DEFAULT 'Pending',
+Stu_id VARCHAR (10),
+Session_id VARCHAR(10),
+PRIMARY KEY(Medi_id),
+FOREIGN KEY (Stu_id) REFERENCES student (Stu_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE,
+FOREIGN KEY (Session_id) REFERENCES session (Session_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+/* Create a view table  view_mark*/
+
+CREATE OR REPLACE VIEW view_marks AS
+SELECT 
+    s.Stu_id,
+    s.Reg_no,
+    CONCAT(u.Fname, ' ', u.Lname) AS Name,
+    s.Status,
+    c.Course_id,
+    c.C_code,
+    c.C_name,
+    c.Credit,
+    m.Quizz01,
+    m.Quizz02,
+    m.Quizz03,
+    -- Best 2 quiz average
+    ROUND(((COALESCE(m.Quizz01,0) + COALESCE(m.Quizz02,0) + COALESCE(m.Quizz03,0) - 
+            LEAST(COALESCE(m.Quizz01,0), COALESCE(m.Quizz02,0), COALESCE(m.Quizz03,0)))/2), 2) AS Best_Quiz_Avg,
+    m.Assesment,
+    m.Mid_practical,
+    m.Mid_theory,
+    m.Final_practical,
+    m.Final_theory,
+    -- CA Marks (40%)
+    ROUND((((COALESCE(m.Quizz01,0) + COALESCE(m.Quizz02,0) + COALESCE(m.Quizz03,0) - 
+            LEAST(COALESCE(m.Quizz01,0), COALESCE(m.Quizz02,0), COALESCE(m.Quizz03,0)))/2) * 0.20 + 
+           COALESCE(m.Assesment,0) * 0.30 + 
+           COALESCE(m.Mid_practical,0) * 0.25 + 
+           COALESCE(m.Mid_theory,0) * 0.25), 2) AS CA_Marks,
+    -- Final Marks (CA 40% + Final 60%)
+    ROUND((((COALESCE(m.Quizz01,0) + COALESCE(m.Quizz02,0) + COALESCE(m.Quizz03,0) - 
+            LEAST(COALESCE(m.Quizz01,0), COALESCE(m.Quizz02,0), COALESCE(m.Quizz03,0)))/2) * 0.08 + 
+           COALESCE(m.Assesment,0) * 0.12 + 
+           COALESCE(m.Mid_practical,0) * 0.10 + 
+           COALESCE(m.Mid_theory,0) * 0.10 +
+           COALESCE(m.Final_practical,0) * 0.18 + 
+           COALESCE(m.Final_theory,0) * 0.42), 2) AS Final_Marks,
+    -- CA Eligibility
+    CASE 
+        WHEN (((COALESCE(m.Quizz01,0) + COALESCE(m.Quizz02,0) + COALESCE(m.Quizz03,0) - 
+                LEAST(COALESCE(m.Quizz01,0), COALESCE(m.Quizz02,0), COALESCE(m.Quizz03,0)))/2) * 0.20 + 
+               COALESCE(m.Assesment,0) * 0.30 + 
+               COALESCE(m.Mid_practical,0) * 0.25 + 
+               COALESCE(m.Mid_theory,0) * 0.25) >= 40 
+        THEN 'Eligible' ELSE 'Not Eligible' 
+    END AS CA_Eligibility
+FROM student s
+JOIN user u ON s.Stu_id = u.User_id
+JOIN marks m ON s.Stu_id = m.Stu_id
+JOIN course c ON m.Course_id = c.Course_id;
+
+/*create a view table  view_grades*/
+CREATE OR REPLACE VIEW view_grades AS
+SELECT 
+    vm.*,
+    CASE 
+        WHEN vm.Status = 'Suspend' THEN 'WH'
+        WHEN EXISTS(
+            SELECT 1 FROM exam_medical em 
+            JOIN exam e ON em.Exam_id = e.Exam_id
+            WHERE em.Stu_id = vm.Stu_id 
+            AND e.Course_id = vm.Course_id
+            AND em.Approve_status = 'Approved'
+        ) THEN 'MC'
+        WHEN vm.Status = 'Repeat' THEN 
+            CASE 
+                WHEN vm.Final_Marks >= 50 THEN 'C'
+                WHEN vm.Final_Marks >= 45 THEN 'C-'
+                WHEN vm.Final_Marks >= 40 THEN 'D+'
+                WHEN vm.Final_Marks >= 35 THEN 'D'
+                ELSE 'E'
+            END
+        WHEN vm.Final_Marks >= 85 THEN 'A+'
+        WHEN vm.Final_Marks >= 80 THEN 'A'
+        WHEN vm.Final_Marks >= 75 THEN 'A-'
+        WHEN vm.Final_Marks >= 70 THEN 'B+'
+        WHEN vm.Final_Marks >= 65 THEN 'B'
+        WHEN vm.Final_Marks >= 60 THEN 'B-'
+        WHEN vm.Final_Marks >= 55 THEN 'C+'
+        WHEN vm.Final_Marks >= 50 THEN 'C'
+        WHEN vm.Final_Marks >= 45 THEN 'C-'
+        WHEN vm.Final_Marks >= 40 THEN 'D+'
+        WHEN vm.Final_Marks >= 35 THEN 'D'
+        ELSE 'E'
+    END AS Grade,
+    -- Grade Point
+    CASE 
+        WHEN vm.Status = 'Suspend' THEN 0.0
+        WHEN EXISTS(
+            SELECT 1 FROM exam_medical em 
+            JOIN exam e ON em.Exam_id = e.Exam_id
+            WHERE em.Stu_id = vm.Stu_id 
+            AND e.Course_id = vm.Course_id
+            AND em.Approve_status = 'Approved'
+        ) THEN 0.0
+        WHEN vm.Status = 'Repeat' THEN 
+            CASE 
+                WHEN vm.Final_Marks >= 50 THEN 2.0
+                WHEN vm.Final_Marks >= 45 THEN 1.7
+                WHEN vm.Final_Marks >= 40 THEN 1.3
+                WHEN vm.Final_Marks >= 35 THEN 1.0
+                ELSE 0.0
+            END
+        WHEN vm.Final_Marks >= 85 THEN 4.0
+        WHEN vm.Final_Marks >= 80 THEN 4.0
+        WHEN vm.Final_Marks >= 75 THEN 3.7
+        WHEN vm.Final_Marks >= 70 THEN 3.3
+        WHEN vm.Final_Marks >= 65 THEN 3.0
+        WHEN vm.Final_Marks >= 60 THEN 2.7
+        WHEN vm.Final_Marks >= 55 THEN 2.3
+        WHEN vm.Final_Marks >= 50 THEN 2.0
+        WHEN vm.Final_Marks >= 45 THEN 1.7
+        WHEN vm.Final_Marks >= 40 THEN 1.3
+        WHEN vm.Final_Marks >= 35 THEN 1.0
+        ELSE 0.0
+    END AS Grade_Point
+FROM view_marks vm;
+
+/*create a procedure  attendance_categories*/
+DELIMITER $$
+CREATE PROCEDURE attendance_categories(IN p_course_code VARCHAR(10))
+BEGIN
+    SELECT 
+        CASE 
+            WHEN Attendance_Percentage >= 80 AND Medical_Count = 0 THEN '>= 80% (No Medical)'
+            WHEN Attendance_Percentage >= 80 AND Medical_Count > 0 THEN '>= 80% (With Medical)'
+            WHEN Attendance_Percentage < 80 AND Medical_Count = 0 THEN '< 80% (No Medical)'
+            WHEN Attendance_Percentage < 80 AND Medical_Count > 0 THEN '< 80% (With Medical)'
+        END AS Category,
+        COUNT(*) AS Student_Count,
+        GROUP_CONCAT(Reg_no ORDER BY Reg_no SEPARATOR ', ') AS Students
+    FROM vw_attendance
+    WHERE C_code = p_course_code
+    AND Session_type = 'Combined'
+    GROUP BY Category;
+END$$
+DELIMITER ;
+
+
+/*create a procedure get_marks*/
+
+DELIMITER $$
+CREATE PROCEDURE get_marks(
+    IN p_course_code VARCHAR(10),
+    IN p_reg_no CHAR(12),
+    IN p_detail_level VARCHAR(10)   -- 'CA', 'FINAL', or 'COMPLETE'
+)
+BEGIN
+    IF p_detail_level = 'CA' THEN
+        SELECT 
+            Reg_no, Name, C_code, C_name,
+            Best_Quiz_Avg, Assesment, Mid_practical, Mid_theory,
+            CA_Marks, CA_Eligibility
+        FROM vw_marks
+        WHERE (p_course_code IS NULL OR C_code = p_course_code)
+        AND (p_reg_no IS NULL OR Reg_no = p_reg_no)
+        ORDER BY Reg_no, C_code;
+        
+    ELSEIF p_detail_level = 'FINAL' THEN
+        SELECT 
+            Reg_no, Name, C_code, C_name,
+            CA_Marks, Final_practical, Final_theory, Final_Marks
+        FROM vw_marks
+        WHERE (p_course_code IS NULL OR C_code = p_course_code)
+        AND (p_reg_no IS NULL OR Reg_no = p_reg_no)
+        ORDER BY Reg_no, C_code;
+        
+    ELSE
+        SELECT 
+            Reg_no, Name, Status, C_code, C_name,
+            Quizz01, Quizz02, Quizz03, Best_Quiz_Avg,
+            Assesment, Mid_practical, Mid_theory,
+            CA_Marks, CA_Eligibility,
+            Final_practical, Final_theory, Final_Marks
+        FROM vw_marks
+        WHERE (p_course_code IS NULL OR C_code = p_course_code)
+        AND (p_reg_no IS NULL OR Reg_no = p_reg_no)
+        ORDER BY Reg_no, C_code;
+    END IF;
+END$$
+DELIMITER ;
+
+/*create a procedure for special grades*/
+DELIMITER $$
+CREATE PROCEDURE special_grades(IN p_course_code VARCHAR(10))
+BEGIN
+    SELECT 
+        Grade,
+        COUNT(*) AS Count,
+        GROUP_CONCAT(Reg_no ORDER BY Reg_no SEPARATOR ', ') AS Students
+    FROM vw_grades
+    WHERE (p_course_code IS NULL OR C_code = p_course_code)
+    AND Grade IN ('WH', 'MC')
+    GROUP BY Grade;
+END$$
+DELIMITER ;
+
+/*create a procedure for complete report*/
+DELIMITER $$
+CREATE PROCEDURE complete_report(IN p_reg_no CHAR(12))
+BEGIN
+    SELECT 'ATTENDANCE SUMMARY' AS Section;
+    SELECT C_code, C_name, Session_type, Attendance_Percentage, Eligibility
+    FROM vw_attendance
+    WHERE Reg_no = p_reg_no AND Session_Date IS NULL
+    ORDER BY C_code, Session_type;
+    
+    SELECT 'MARKS AND GRADES' AS Section;
+    SELECT C_code, C_name, CA_Marks, Final_Marks, Grade, Grade_Point
+    FROM vw_grades
+    WHERE Reg_no = p_reg_no
+    ORDER BY C_code;
+    
+    SELECT 'GPA SUMMARY' AS Section;
+    SELECT * FROM vw_gpa WHERE Reg_no = p_reg_no;
+    
+    SELECT 'ELIGIBILITY STATUS' AS Section;
+    SELECT C_code, C_name, Overall_Eligibility
+    FROM vw_eligibility
+    WHERE Reg_no = p_reg_no
+    ORDER BY C_code;
+END$$
+DELIMITER ;
+
+/*create user account*/
+
+CREATE USER 'admin_user'@'localhost' IDENTIFIED BY 'admin123';
+GRANT ALL PRIVILEGES ON fot_db.* TO 'admin_user'@'localhost' WITH GRANT OPTION;
+
+
+CREATE USER 'dean_user'@'localhost' IDENTIFIED BY 'dean456';
+GRANT ALL PRIVILEGES ON fot_db.* TO 'dean_user'@'localhost';
+
+CREATE USER 'lecturer_user'@'localhost' IDENTIFIED BY 'lec789';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER 
+ON fot_db.* TO 'lecturer_user'@'localhost';
+
+
+CREATE USER 'to_user'@'localhost' IDENTIFIED BY 'to505';
+GRANT SELECT, INSERT, UPDATE ON fot_db.attendance TO 'to_user'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON fot_db.session TO 'to_user'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON fot_db.medical TO 'to_user'@'localhost';
+GRANT SELECT ON fot_db.vw_attendance TO 'to_user'@'localhost';
+
+
+CREATE USER 'student_user'@'localhost' IDENTIFIED BY 'stu001';
+GRANT SELECT ON fot_db.vw_grades TO 'student_user'@'localhost';
+GRANT SELECT ON fot_db.vw_gpa TO 'student_user'@'localhost';
+GRANT SELECT ON fot_db.vw_attendance TO 'student_user'@'localhost';
+
+FLUSH PRIVILEGES;
