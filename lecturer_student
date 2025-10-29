@@ -1,0 +1,14 @@
+CREATE TABLE lecturer_student(
+Lec_id VARCHAR(10),
+Stu_id VARCHAR(10),
+
+PRIMARY KEY(Lec_id,Stu_id),
+
+FOREIGN KEY (Lec_id) REFERENCES lecturer (Lec_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE,
+FOREIGN KEY (Stu_id) REFERENCES student (Stu_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
