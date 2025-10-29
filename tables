@@ -1,0 +1,419 @@
+//course
+CREATE TABLE course
+(
+Course_id VARCHAR(10),
+Type ENUM('Theory','Practical','Both') DEFAULT 'Theory',
+C_code VARCHAR(10),
+Credit INT,
+C_name VARCHAR(50),
+Lec_id VARCHAR(10),
+Dep_id VARCHAR(10),
+PRIMARY KEY(Course_id),
+FOREIGN KEY (Lec_id) REFERENCES lecturer (Lec_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE,
+FOREIGN KEY (Dep_id) REFERENCES department (Dep_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+INSERT INTO course VALUES 
+('c01', 'Theory', 'TMS1233', 3, 'Discrete Mathematics', 'lec01', 'd01'),
+('c02', 'Both', 'ICT1253', 3, 'Computer Networks', 'lec01', 'd01'),
+('c03', 'Theory', 'ICT1242', 2, 'Computer Archutecture', 'lec02', 'd01'),
+('c04', 'Both', 'ICT1233', 1, 'Server Side Web Development', 'lec02', 'd01'),
+('c05', 'Practical', 'ICT1222', 2, 'Database Management Systems Practicum', 'lec03', 'd01'),
+('c06', 'Theory', 'ICT1212', 2, 'Database Management Systems', 'lec04', 'd01'),
+('c07', 'Theory', 'ENG1222', 2, 'English II', 'lec04', 'd01'),
+('c08', 'Theory', 'TCS1212', 2, 'Fundamentals of Management', 'lec04', 'd01');
+
+
+
+
+
+
+//syudent_course
+CREATE TABLE student_course
+(
+Course_id VARCHAR(10),
+Stu_id VARCHAR(10),
+PRIMARY KEY(Course_id,Stu_id),
+FOREIGN KEY (Course_id) REFERENCES course (Course_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE,
+FOREIGN KEY (Stu_id) REFERENCES student (Stu_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+); 
+
+INSERT INTO student_course VALUES 
+-- us01
+('c01', 'us01'), ('c02', 'us01'), ('c03', 'us01'), ('c04', 'us01'),
+('c05', 'us01'), ('c06', 'us01'), ('c07', 'us01'), ('c08', 'us01'),
+-- us02
+('c01', 'us02'), ('c02', 'us02'), ('c03', 'us02'), ('c04', 'us02'),
+('c05', 'us02'), ('c06', 'us02'), ('c07', 'us02'), ('c08', 'us02'),
+-- us03
+('c01', 'us03'), ('c02', 'us03'), ('c03', 'us03'), ('c04', 'us03'),
+('c05', 'us03'), ('c06', 'us03'), ('c07', 'us03'), ('c08', 'us03'),
+-- us04
+('c01', 'us04'), ('c02', 'us04'), ('c03', 'us04'), ('c04', 'us04'),
+('c05', 'us04'), ('c06', 'us04'), ('c07', 'us04'), ('c08', 'us04'),
+-- us05
+('c01', 'us05'), ('c02', 'us05'), ('c03', 'us05'), ('c04', 'us05'),
+('c05', 'us05'), ('c06', 'us05'), ('c07', 'us05'), ('c08', 'us05'),
+-- us06
+('c01', 'us06'), ('c02', 'us06'), ('c03', 'us06'), ('c04', 'us06'),
+('c05', 'us06'), ('c06', 'us06'), ('c07', 'us06'), ('c08', 'us06'),
+-- us07
+('c01', 'us07'), ('c02', 'us07'), ('c03', 'us07'), ('c04', 'us07'),
+('c05', 'us07'), ('c06', 'us07'), ('c07', 'us07'), ('c08', 'us07'),
+-- us08
+('c01', 'us08'), ('c02', 'us08'), ('c03', 'us08'), ('c04', 'us08'),
+('c05', 'us08'), ('c06', 'us08'), ('c07', 'us08'), ('c08', 'us08'),
+-- us09
+('c01', 'us09'), ('c02', 'us09'), ('c03', 'us09'), ('c04', 'us09'),
+('c05', 'us09'), ('c06', 'us09'), ('c07', 'us09'), ('c08', 'us09'),
+-- us10
+('c01', 'us10'), ('c02', 'us10'), ('c03', 'us10'), ('c04', 'us10'),
+('c05', 'us10'), ('c06', 'us10'), ('c07', 'us10'), ('c08', 'us10'),
+-- us11
+('c01', 'us11'), ('c02', 'us11'), ('c03', 'us11'), ('c04', 'us11'),
+('c05', 'us11'), ('c06', 'us11'), ('c07', 'us11'), ('c08', 'us11'),
+-- us12
+('c01', 'us12'), ('c02', 'us12'), ('c03', 'us12'), ('c04', 'us12'),
+('c05', 'us12'), ('c06', 'us12'), ('c07', 'us12'), ('c08', 'us12'),
+-- us13
+('c01', 'us13'), ('c02', 'us13'), ('c03', 'us13'), ('c04', 'us13'),
+('c05', 'us13'), ('c06', 'us13'), ('c07', 'us13'), ('c08', 'us13'),
+-- us14
+('c01', 'us14'), ('c02', 'us14'), ('c03', 'us14'), ('c04', 'us14'),
+('c05', 'us14'), ('c06', 'us14'), ('c07', 'us14'), ('c08', 'us14'),
+-- us15
+('c01', 'us15'), ('c02', 'us15'), ('c03', 'us15'), ('c04', 'us15'),
+('c05', 'us15'), ('c06', 'us15'), ('c07', 'us15'), ('c08', 'us15');
+
+  
+
+
+
+//session
+CREATE TABLE session
+(
+Session_id VARCHAR(10),
+Session_num INT DEFAULT 0,
+Date DATE,
+Duration TIME,
+Course_id VARCHAR(10),
+Session_type ENUM('Practical','Theory') DEFAULT 'Theory',
+PRIMARY KEY(Session_id),
+FOREIGN KEY (Course_id) REFERENCES course (Course_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+INSERT INTO session VALUES 
+('sess001', 1, '2024-01-08', '02:00:00', 'c01', 'Theory'),
+('sess002', 2, '2024-01-15', '02:00:00', 'c01', 'Theory'),
+('sess003', 3, '2024-01-22', '02:00:00', 'c01', 'Theory'),
+('sess004', 4, '2024-01-29', '02:00:00', 'c01', 'Theory'),
+('sess005', 5, '2024-02-05', '02:00:00', 'c01', 'Theory'),
+('sess006', 6, '2024-02-12', '02:00:00', 'c01', 'Theory'),
+('sess007', 7, '2024-02-19', '02:00:00', 'c01', 'Theory'),
+('sess008', 8, '2024-02-26', '02:00:00', 'c01', 'Theory'),
+('sess009', 9, '2024-03-04', '02:00:00', 'c01', 'Theory'),
+('sess010', 10, '2024-03-11', '02:00:00', 'c01', 'Theory'),
+('sess011', 11, '2024-03-18', '02:00:00', 'c01', 'Theory'),
+('sess012', 12, '2024-04-01', '02:00:00', 'c01', 'Theory'),
+('sess013', 13, '2024-04-08', '02:00:00', 'c01', 'Theory'),
+('sess014', 14, '2024-04-15', '02:00:00', 'c01', 'Theory'),
+('sess015', 15, '2024-04-22', '02:00:00', 'c01', 'Theory');
+
+INSERT INTO session VALUES 
+('sess016', 1, '2024-01-09', '02:00:00', 'c02', 'Theory'),
+('sess017', 2, '2024-01-16', '02:00:00', 'c02', 'Theory'),
+('sess018', 3, '2024-01-23', '02:00:00', 'c02', 'Theory'),
+('sess019', 4, '2024-01-30', '02:00:00', 'c02', 'Theory'),
+('sess020', 5, '2024-02-06', '02:00:00', 'c02', 'Theory'),
+('sess021', 6, '2024-02-13', '02:00:00', 'c02', 'Theory'),
+('sess022', 7, '2024-02-20', '02:00:00', 'c02', 'Theory'),
+('sess023', 8, '2024-02-27', '02:00:00', 'c02', 'Theory'),
+('sess024', 9, '2024-03-05', '02:00:00', 'c02', 'Theory'),
+('sess025', 10, '2024-03-12', '02:00:00', 'c02', 'Theory'),
+('sess026', 11, '2024-03-19', '02:00:00', 'c02', 'Theory'),
+('sess027', 12, '2024-04-02', '02:00:00', 'c02', 'Theory'),
+('sess028', 13, '2024-04-09', '02:00:00', 'c02', 'Theory'),
+('sess029', 14, '2024-04-16', '02:00:00', 'c02', 'Theory'),
+('sess030', 15, '2024-04-23', '02:00:00', 'c02', 'Theory');
+
+INSERT INTO session VALUES 
+('sess031', 1, '2024-01-10', '03:00:00', 'c02', 'Practical'),
+('sess032', 2, '2024-01-17', '03:00:00', 'c02', 'Practical'),
+('sess033', 3, '2024-01-24', '03:00:00', 'c02', 'Practical'),
+('sess034', 4, '2024-01-31', '03:00:00', 'c02', 'Practical'),
+('sess035', 5, '2024-02-07', '03:00:00', 'c02', 'Practical'),
+('sess036', 6, '2024-02-14', '03:00:00', 'c02', 'Practical'),
+('sess037', 7, '2024-02-21', '03:00:00', 'c02', 'Practical'),
+('sess038', 8, '2024-02-28', '03:00:00', 'c02', 'Practical'),
+('sess039', 9, '2024-03-06', '03:00:00', 'c02', 'Practical'),
+('sess040', 10, '2024-03-13', '03:00:00', 'c02', 'Practical'),
+('sess041', 11, '2024-03-20', '03:00:00', 'c02', 'Practical'),
+('sess042', 12, '2024-04-03', '03:00:00', 'c02', 'Practical'),
+('sess043', 13, '2024-04-10', '03:00:00', 'c02', 'Practical'),
+('sess044', 14, '2024-04-17', '03:00:00', 'c02', 'Practical'),
+('sess045', 15, '2024-04-24', '03:00:00', 'c02', 'Practical');
+
+INSERT INTO session VALUES 
+('sess046', 1, '2024-01-11', '02:00:00', 'c03', 'Theory'),
+('sess047', 2, '2024-01-18', '02:00:00', 'c03', 'Theory'),
+('sess048', 3, '2024-01-25', '02:00:00', 'c03', 'Theory'),
+('sess049', 4, '2024-02-01', '02:00:00', 'c03', 'Theory'),
+('sess050', 5, '2024-02-08', '02:00:00', 'c03', 'Theory'),
+('sess051', 6, '2024-02-15', '02:00:00', 'c03', 'Theory'),
+('sess052', 7, '2024-02-22', '02:00:00', 'c03', 'Theory'),
+('sess053', 8, '2024-02-29', '02:00:00', 'c03', 'Theory'),
+('sess054', 9, '2024-03-07', '02:00:00', 'c03', 'Theory'),
+('sess055', 10, '2024-03-14', '02:00:00', 'c03', 'Theory'),
+('sess056', 11, '2024-03-21', '02:00:00', 'c03', 'Theory'),
+('sess057', 12, '2024-04-04', '02:00:00', 'c03', 'Theory'),
+('sess058', 13, '2024-04-11', '02:00:00', 'c03', 'Theory'),
+('sess059', 14, '2024-04-18', '02:00:00', 'c03', 'Theory'),
+('sess060', 15, '2024-04-25', '02:00:00', 'c03', 'Theory');
+
+INSERT INTO session VALUES 
+('sess061', 1, '2024-01-12', '02:00:00', 'c04', 'Theory'),
+('sess062', 2, '2024-01-19', '02:00:00', 'c04', 'Theory'),
+('sess063', 3, '2024-01-26', '02:00:00', 'c04', 'Theory'),
+('sess064', 4, '2024-02-02', '02:00:00', 'c04', 'Theory'),
+('sess065', 5, '2024-02-09', '02:00:00', 'c04', 'Theory'),
+('sess066', 6, '2024-02-16', '02:00:00', 'c04', 'Theory'),
+('sess067', 7, '2024-02-23', '02:00:00', 'c04', 'Theory'),
+('sess068', 8, '2024-03-01', '02:00:00', 'c04', 'Theory'),
+('sess069', 9, '2024-03-08', '02:00:00', 'c04', 'Theory'),
+('sess070', 10, '2024-03-15', '02:00:00', 'c04', 'Theory'),
+('sess071', 11, '2024-03-22', '02:00:00', 'c04', 'Theory'),
+('sess072', 12, '2024-04-05', '02:00:00', 'c04', 'Theory'),
+('sess073', 13, '2024-04-12', '02:00:00', 'c04', 'Theory'),
+('sess074', 14, '2024-04-19', '02:00:00', 'c04', 'Theory'),
+('sess075', 15, '2024-04-26', '02:00:00', 'c04', 'Theory');
+
+INSERT INTO session VALUES 
+('sess076', 1, '2024-01-13', '03:00:00', 'c04', 'Practical'),
+('sess077', 2, '2024-01-20', '03:00:00', 'c04', 'Practical'),
+('sess078', 3, '2024-01-27', '03:00:00', 'c04', 'Practical'),
+('sess079', 4, '2024-02-03', '03:00:00', 'c04', 'Practical'),
+('sess080', 5, '2024-02-10', '03:00:00', 'c04', 'Practical'),
+('sess081', 6, '2024-02-17', '03:00:00', 'c04', 'Practical'),
+('sess082', 7, '2024-02-24', '03:00:00', 'c04', 'Practical'),
+('sess083', 8, '2024-03-02', '03:00:00', 'c04', 'Practical'),
+('sess084', 9, '2024-03-09', '03:00:00', 'c04', 'Practical'),
+('sess085', 10, '2024-03-16', '03:00:00', 'c04', 'Practical'),
+('sess086', 11, '2024-03-23', '03:00:00', 'c04', 'Practical'),
+('sess087', 12, '2024-04-06', '03:00:00', 'c04', 'Practical'),
+('sess088', 13, '2024-04-13', '03:00:00', 'c04', 'Practical'),
+('sess089', 14, '2024-04-20', '03:00:00', 'c04', 'Practical'),
+('sess090', 15, '2024-04-27', '03:00:00', 'c04', 'Practical');
+
+INSERT INTO session VALUES 
+('sess091', 1, '2024-01-14', '03:00:00', 'c05', 'Practical'),
+('sess092', 2, '2024-01-21', '03:00:00', 'c05', 'Practical'),
+('sess093', 3, '2024-01-28', '03:00:00', 'c05', 'Practical'),
+('sess094', 4, '2024-02-04', '03:00:00', 'c05', 'Practical'),
+('sess095', 5, '2024-02-11', '03:00:00', 'c05', 'Practical'),
+('sess096', 6, '2024-02-18', '03:00:00', 'c05', 'Practical'),
+('sess097', 7, '2024-02-25', '03:00:00', 'c05', 'Practical'),
+('sess098', 8, '2024-03-03', '03:00:00', 'c05', 'Practical'),
+('sess099', 9, '2024-03-10', '03:00:00', 'c05', 'Practical'),
+('sess100', 10, '2024-03-17', '03:00:00', 'c05', 'Practical'),
+('sess101', 11, '2024-03-24', '03:00:00', 'c05', 'Practical'),
+('sess102', 12, '2024-04-07', '03:00:00', 'c05', 'Practical'),
+('sess103', 13, '2024-04-14', '03:00:00', 'c05', 'Practical'),
+('sess104', 14, '2024-04-21', '03:00:00', 'c05', 'Practical'),
+('sess105', 15, '2024-04-28', '03:00:00', 'c05', 'Practical');
+
+INSERT INTO session VALUES 
+('sess106', 1, '2024-01-15', '02:00:00', 'c06', 'Theory'),
+('sess107', 2, '2024-01-22', '02:00:00', 'c06', 'Theory'),
+('sess108', 3, '2024-01-29', '02:00:00', 'c06', 'Theory'),
+('sess109', 4, '2024-02-05', '02:00:00', 'c06', 'Theory'),
+('sess110', 5, '2024-02-12', '02:00:00', 'c06', 'Theory'),
+('sess111', 6, '2024-02-19', '02:00:00', 'c06', 'Theory'),
+('sess112', 7, '2024-02-26', '02:00:00', 'c06', 'Theory'),
+('sess113', 8, '2024-03-04', '02:00:00', 'c06', 'Theory'),
+('sess114', 9, '2024-03-11', '02:00:00', 'c06', 'Theory'),
+('sess115', 10, '2024-03-18', '02:00:00', 'c06', 'Theory'),
+('sess116', 11, '2024-03-25', '02:00:00', 'c06', 'Theory'),
+('sess117', 12, '2024-04-08', '02:00:00', 'c06', 'Theory'),
+('sess118', 13, '2024-04-15', '02:00:00', 'c06', 'Theory'),
+('sess119', 14, '2024-04-22', '02:00:00', 'c06', 'Theory'),
+('sess120', 15, '2024-04-29', '02:00:00', 'c06', 'Theory');
+
+INSERT INTO session VALUES 
+('sess121', 1, '2024-01-16', '02:00:00', 'c07', 'Theory'),
+('sess122', 2, '2024-01-23', '02:00:00', 'c07', 'Theory'),
+('sess123', 3, '2024-01-30', '02:00:00', 'c07', 'Theory'),
+('sess124', 4, '2024-02-06', '02:00:00', 'c07', 'Theory'),
+('sess125', 5, '2024-02-13', '02:00:00', 'c07', 'Theory'),
+('sess126', 6, '2024-02-20', '02:00:00', 'c07', 'Theory'),
+('sess127', 7, '2024-02-27', '02:00:00', 'c07', 'Theory'),
+('sess128', 8, '2024-03-05', '02:00:00', 'c07', 'Theory'),
+('sess129', 9, '2024-03-12', '02:00:00', 'c07', 'Theory'),
+('sess130', 10, '2024-03-19', '02:00:00', 'c07', 'Theory'),
+('sess131', 11, '2024-03-26', '02:00:00', 'c07', 'Theory'),
+('sess132', 12, '2024-04-09', '02:00:00', 'c07', 'Theory'),
+('sess133', 13, '2024-04-16', '02:00:00', 'c07', 'Theory'),
+('sess134', 14, '2024-04-23', '02:00:00', 'c07', 'Theory'),
+('sess135', 15, '2024-04-30', '02:00:00', 'c07', 'Theory');
+
+INSERT INTO session VALUES 
+('sess136', 1, '2024-01-17', '02:00:00', 'c08', 'Theory'),
+('sess137', 2, '2024-01-24', '02:00:00', 'c08', 'Theory'),
+('sess138', 3, '2024-01-31', '02:00:00', 'c08', 'Theory'),
+('sess139', 4, '2024-02-07', '02:00:00', 'c08', 'Theory'),
+('sess140', 5, '2024-02-14', '02:00:00', 'c08', 'Theory'),
+('sess141', 6, '2024-02-21', '02:00:00', 'c08', 'Theory'),
+('sess142', 7, '2024-02-28', '02:00:00', 'c08', 'Theory'),
+('sess143', 8, '2024-03-06', '02:00:00', 'c08', 'Theory'),
+('sess144', 9, '2024-03-13', '02:00:00', 'c08', 'Theory'),
+('sess145', 10, '2024-03-20', '02:00:00', 'c08', 'Theory'),
+('sess146', 11, '2024-03-27', '02:00:00', 'c08', 'Theory'),
+('sess147', 12, '2024-04-10', '02:00:00', 'c08', 'Theory'),
+('sess148', 13, '2024-04-17', '02:00:00', 'c08', 'Theory'),
+('sess149', 14, '2024-04-24', '02:00:00', 'c08', 'Theory'),
+('sess150', 15, '2024-05-01', '02:00:00', 'c08', 'Theory');
+
+
+
+
+//exam_medical
+CREATE TABLE exam_medical
+(
+    Exam_medi_id VARCHAR(10),
+    S_date DATE,
+    E_date DATE,
+    Description VARCHAR(100),
+    Approve_status ENUM('Approved', 'Pending', 'Rejected') DEFAULT 'Pending',
+    Stu_id VARCHAR(10),
+    Exam_id VARCHAR(10),
+    PRIMARY KEY(Exam_medi_id),
+    FOREIGN KEY (Stu_id) REFERENCES student (Stu_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+    FOREIGN KEY (Exam_id) REFERENCES exam (Exam_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
+INSERT INTO exam_medical VALUES 
+('emed001', '2024-06-14', '2024-06-21', 'COVID-19 - Missed Final Exams', 'Approved', 'us04', 'ex013'),
+('emed002', '2024-06-14', '2024-06-21', 'COVID-19 - Missed Final Exams', 'Approved', 'us04', 'ex014'),
+('emed003', '2024-04-24', '2024-04-27', 'Accident - Missed Mid Practical', 'Approved', 'us05', 'ex011'),
+('emed004', '2024-06-19', '2024-06-23', 'Hospitalized', 'Approved', 'us06', 'ex006'),
+('emed005', '2024-03-20', '2024-03-22', 'Surgery', 'Pending', 'us07', 'ex003');
+
+
+
+//procedure
+DELIMITER $$
+CREATE PROCEDURE get_grades(
+    IN p_course_code VARCHAR(10),
+    IN p_reg_no CHAR(12)
+)
+BEGIN
+    SELECT 
+        Reg_no, Name, Status, C_code, C_name, Credit,
+        Final_Marks, Grade, Grade_Point
+    FROM vw_grades
+    WHERE (p_course_code IS NULL OR C_code = p_course_code)
+    AND (p_reg_no IS NULL OR Reg_no = p_reg_no)
+    ORDER BY Reg_no, C_code;
+END$$
+DELIMITER ;
+
+
+
+DELIMITER $$
+CREATE PROCEDURE get_gpa(IN p_reg_no CHAR(12))
+BEGIN
+    IF p_reg_no IS NULL THEN
+        -- Batch GPA
+        SELECT * FROM vw_gpa ORDER BY SGPA DESC;
+    ELSE
+        -- Individual with subjects
+        SELECT C_code, C_name, Credit, Final_Marks, Grade, Grade_Point
+        FROM vw_grades WHERE Reg_no = p_reg_no ORDER BY C_code;
+        
+        SELECT * FROM vw_gpa WHERE Reg_no = p_reg_no;
+    END IF;
+END$$
+DELIMITER ;
+
+
+
+
+DELIMITER $$
+CREATE PROCEDURE check_eligibility(
+    IN p_course_code VARCHAR(10),
+    IN p_reg_no CHAR(12)
+)
+BEGIN
+    SELECT 
+        Reg_no, Name, C_code, C_name,
+        Attendance_Percentage, Attendance_Eligibility,
+        CA_Marks, CA_Eligibility,
+        Overall_Eligibility
+    FROM vw_eligibility
+    WHERE (p_course_code IS NULL OR C_code = p_course_code)
+    AND (p_reg_no IS NULL OR Reg_no = p_reg_no)
+    ORDER BY Reg_no, C_code;
+END$$
+DELIMITER ;
+
+
+
+
+
+
+//view gpa
+CREATE OR REPLACE VIEW view_gpa AS
+SELECT 
+    Stu_id,
+    Reg_no,
+    Name,
+    Status,
+    COUNT(Course_id) AS Total_Courses,
+    SUM(Credit) AS Total_Credits,
+    SUM(CASE WHEN Grade NOT IN ('WH', 'MC') THEN Credit ELSE 0 END) AS Earned_Credits,
+    ROUND(SUM(Grade_Point * Credit) / NULLIF(SUM(CASE WHEN Grade NOT IN ('WH', 'MC') THEN Credit ELSE 0 END), 0), 2) AS SGPA,
+    ROUND(SUM(Grade_Point * Credit) / NULLIF(SUM(CASE WHEN Grade NOT IN ('WH', 'MC') THEN Credit ELSE 0 END), 0), 2) AS CGPA
+FROM view_grades
+GROUP BY Stu_id, Reg_no, Name, Status;
+
+
+
+
+//view  eligibility
+CREATE OR REPLACE VIEW view_eligibility AS
+SELECT 
+    vm.Stu_id,
+    vm.Reg_no,
+    vm.Name,
+    vm.C_code,
+    vm.C_name,
+    a.Attendance_Percentage,
+    a.Eligibility AS Attendance_Eligibility,
+    vm.CA_Marks,
+    vm.CA_Eligibility,
+    CASE 
+        WHEN a.Eligibility = 'Eligible' AND vm.CA_Eligibility = 'Eligible' 
+        THEN 'Eligible for Final' 
+        ELSE 'Not Eligible' 
+    END AS Overall_Eligibility
+FROM view_marks vm
+LEFT JOIN view_attendance a ON vm.Stu_id = a.Stu_id 
+    AND vm.Course_id = a.Course_id 
+    AND a.Session_type = 'Combined';
+
+
+
+
