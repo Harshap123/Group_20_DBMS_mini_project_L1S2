@@ -1,0 +1,9 @@
+create table user(
+u_id INT NOT NULL,
+Fname varchar(20),
+Lname varchar(20),
+username varchar(10),
+password varchar(10),
+role varchar(10),
+PRIMARY KEY (u_id)
+);

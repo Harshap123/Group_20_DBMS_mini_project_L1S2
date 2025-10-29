@@ -1,0 +1,8 @@
+create table lecturer(
+l_id INT NOT NULL,
+d_id INT,
+position varchar (15),
+PRIMARY KEY (l_id),
+FOREIGN KEY (l_id)REFERENCES user (u_id),
+FOREIGN KEY (d_id)REFERENCES department (d_id)
+);

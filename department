@@ -1,0 +1,6 @@
+create table department(
+d_id INT NOT NULL,
+name varchar(20),
+head varchar (15),
+PRIMARY KEY(d_id)
+);

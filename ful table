@@ -1,0 +1,283 @@
+CREATE TABLE user
+    -> (
+    -> User_id VARCHAR(10),
+    -> Password VARCHAR(20),
+    -> Username VARCHAR(20),
+    -> Fname VARCHAR(50),
+    -> Lname VARCHAR(50),
+    -> Dob DATE,
+    -> Tele_no CHAR(12),
+    -> Email VARCHAR(50),
+    -> PRIMARY KEY(User_id)
+    -> );
+
+     INSERT INTO user
+    -> (User_id, Username, Fname, Lname, Password, Dob, Tele_no, Email)
+    -> VALUES
+    -> ('adm01', 'admin_max', 'Max', 'Bandara', 'Adm@1234', '1980-01-01', '071-1234567', 'max.b@uni.ac.lk'),
+    -> ('den01', 'dean_saman', 'Saman', 'Kumara', 'Den@1234', '1985-02-02', '077-2345678', 'saman.k@uni.ac.lk'),
+    ->
+    -> ('lec01', 'lect_nuwan', 'Nuwan', 'Perera', 'Lec@1234', '1990-03-03', '075-3456789', 'nuwan.p@uni.ac.lk'),
+    -> ('lec02', 'lect_amali', 'Amali', 'Perera', 'Lec@5678', '1991-04-04', '078-4567890', 'amali.p@uni.ac.lk'),
+    -> ('lec03', 'lect_prasad', 'Prasad', 'Rathnayake', 'Lec@9012', '1988-05-05', '070-5678901', 'prasad.r@uni.ac.lk'),
+    -> ('lec04', 'lect_malsha', 'Malsha', 'Fernando', 'Lec@3456', '1992-06-06', '071-6789012', 'malsha.f@uni.ac.lk'),
+    -> ('lec05', 'lect_tharaka', 'Tharaka', 'Senanayake', 'Lec@7890', '1987-07-07', '077-7890123', 'tharaka.s@uni.ac.lk'),
+    ->
+    -> ('to01', 'to_kamal', 'Kamal', 'Silva', 'TO@1234', '1995-08-08', '076-8901234', 'kamal.s@uni.ac.lk'),
+    -> ('to02', 'to_anjali', 'Anjali', 'Gamage', 'TO@5678', '1996-09-09', '072-9012345', 'anjali.g@uni.ac.lk'),
+    -> ('to03', 'to_niran', 'Niran', 'Jayasinghe', 'TO@9012', '1994-10-10', '075-0123456', 'niran.j@uni.ac.lk'),
+    -> ('to04', 'to_dinithi', 'Dinithi', 'Ranjith', 'TO@3456', '1997-11-11', '078-1234567', 'dinithi.r@uni.ac.lk'),
+    -> ('to05', 'to_chamara', 'Chamara', 'Dias', 'TO@7890', '1993-12-12', '070-2345678', 'chamara.d@uni.ac.lk'),
+    ->
+    -> ('us01', 'nimali01', 'Nimali', 'Perera', 'Stu@1234', '2000-10-12', '072-1314252', 'nimali@stu.lk'),
+    -> ('us02', 'hasini02', 'Hasini', 'Silva', 'Stu@2345', '2001-01-01', '071-2345678', 'hasini@stu.lk'),
+    -> ('us03', 'kasun03', 'Kasun', 'Bandara', 'Stu@3456', '2000-02-02', '077-3456789', 'kasun@stu.lk'),
+    -> ('us04', 'ishara04', 'Ishara', 'Rajapakse', 'Stu@4567', '2001-03-03', '075-4567890', 'ishara@stu.lk'),
+    -> ('us05', 'tharindu05', 'Tharindu', 'Lakmal', 'Stu@5678', '2000-04-04', '078-5678901', 'tharindu@stu.lk'),
+    -> ('us06', 'dilmi06', 'Dilmi', 'Hewage', 'Stu@6789', '2001-05-05', '070-6789012', 'dilmi@stu.lk'),
+    -> ('us07', 'sahan07', 'Sahan', 'Wickramasinghe', 'Stu@7890', '2000-06-06', '071-7890123', 'sahan@stu.lk'),
+    -> ('us08', 'savindi08', 'Savindi', 'Gunawardena', 'Stu@8901', '2001-07-07', '077-8901234', 'savindi@stu.lk'),
+    -> ('us09', 'pubudu09', 'Pubudu', 'Jayasuriya', 'Stu@9012', '2000-08-08', '075-9012345', 'pubudu@stu.lk'),
+    -> ('us10', 'dinuka10', 'Dinuka', 'Mendis', 'Stu@1230', '2001-09-09', '078-0123456', 'dinuka@stu.lk'),
+    ->
+    -> ('us11', 'maleesha11', 'Maleesha', 'Rathnayake', 'mal@1234', '1999-10-10', '070-1234567', 'maleesha@stu.lk'),
+    -> ('us12', 'isuru12', 'Isuru', 'Sampath', 'isuru@2345', '1998-11-11', '071-2345670', 'isuru@stu.lk'),
+    -> ('us13', 'tharushi13', 'Tharushi', 'Kavindi', 'tharu@3456', '1999-12-12', '077-3456780', 'tharushi@stu.lk'),
+    -> ('us14', 'oshara14', 'Oshara', 'Madushan', 'oshara@4567', '1998-01-13', '075-4567890', 'oshara@stu.lk'),
+    -> ('us15', 'nadeesha15', 'Nadeesha', 'Dilshan', 'nadee@5678', '1999-02-14', '078-5678900', 'nadeesha@stu.lk'),
+    ->
+    -> ('us16', 'suranga16', 'Suranga', 'Thenuka', 'Suranga@6789', '1997-03-15', '070-6789010', 'suranga@stu.lk');
+
+
+CREATE TABLE lecturer
+(
+Lec_id VARCHAR(10),
+Designation VARCHAR(50) DEFAULT 'Lecturer',
+Dep_id VARCHAR(50),
+PRIMARY KEY(Lec_id),
+FOREIGN KEY (Dep_id) REFERENCES department (Dep_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+INSERT INTO lecturer
+    -> (Lec_id, Designation, Dep_id)
+    -> VALUES
+    -> ('lec01', 'Senior Lecturer', 'd01'),
+    -> ('lec02', 'Lecturer', 'd01'),
+    -> ('lec03', 'Lecturer', 'd01'),
+    -> ('lec04', 'Lecturer', 'd01'),
+    -> ('lec05', 'Temporary Lecturer', 'd01');
+
+CREATE TABLE department
+(
+Dep_id VARCHAR(10),
+Name VARCHAR(50),
+Head_of_dep VARCHAR(10),
+PRIMARY KEY(Dep_id)
+);
+
+ALTER TABLE department
+ADD CONSTRAINT fk_head_of_dep 
+FOREIGN KEY (Head_of_dep)
+REFERENCES lecturer (Lec_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE;
+
+
+
+
+INSERT INTO department
+    -> (Dep_id, Name, Head_of_dep)
+    -> VALUES
+    -> ('d01', 'Information Communication Technology', 'lec01'),
+    -> ('d02', 'Engineering Technology', 'lec03'),
+    -> ('d03', 'Bio System Technology', 'lec04'),
+    -> ('d04','Multidisciplinary Studies','lec02');
+
+CREATE TABLE student
+(
+Stu_id VARCHAR(10),
+Reg_no CHAR(12) NOT NULL,
+Status ENUM('Proper','Repeat','Suspend') DEFAULT 'Proper',
+Batch INT,
+Dep_id VARCHAR(10) NOT NULL,
+PRIMARY KEY(Stu_id),
+FOREIGN KEY (Dep_id) REFERENCES department (Dep_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+); 
+ INSERT INTO student
+    -> (Stu_id, Reg_no, Batch, Status, Dep_id)
+    -> VALUES
+    ->
+    -> ('us01', 'TG/2023/1234', 8, 'proper', 'd01'),
+    -> ('us02', 'TG/2023/1235', 8, 'proper', 'd01'),
+    -> ('us03', 'TG/2023/1236', 8, 'proper', 'd01'),
+    -> ('us04', 'TG/2023/1237', 8, 'proper', 'd01'),
+    -> ('us05', 'TG/2023/1238', 8, 'proper', 'd01'),
+    -> ('us06', 'TG/2023/1239', 8, 'proper', 'd01'),
+    -> ('us07', 'TG/2023/1240', 8, 'proper', 'd01'),
+    -> ('us08', 'TG/2023/1241', 8, 'proper', 'd01'),
+    -> ('us09', 'TG/2023/1242', 8, 'proper', 'd01'),
+    -> ('us10', 'TG/2023/1243', 8, 'proper', 'd01'),
+    ->
+    -> ('us11', 'TG/2022/1111', 7, 'repeat', 'd01'),
+    -> ('us12', 'TG/2022/1112', 7, 'repeat', 'd01'),
+    -> ('us13', 'TG/2022/1113', 7, 'repeat', 'd01'),
+    -> ('us14', 'TG/2022/1114', 7, 'repeat', 'd01'),
+    -> ('us15', 'TG/2022/1115', 7, 'repeat', 'd01'),
+    ->
+    -> ('us16', 'TG/2021/1000', 6, 'suspend', 'd01');
+
+CREATE TABLE tec_officer
+(
+To_id VARCHAR(10),
+Special_area VARCHAR(50),
+PRIMARY KEY(To_id),
+FOREIGN KEY (To_id) REFERENCES user (User_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+
+INSERT INTO tec_officer (To_id, Special_area) VALUES
+('T001', 'Computer Lab Maintenance'),
+('T002', 'Network Administration'),
+('T003', 'Electronics Equipment'),
+('T004', 'Mechanical Systems'),
+('T005', 'Biotechnology Lab');
+
+
+CREATE TABLE admin
+(
+Admin_id VARCHAR(10),
+Assigned_dep VARCHAR(50),
+Access_level VARCHAR(20),
+PRIMARY KEY(Admin_id),
+FOREIGN KEY (Admin_id) REFERENCES user (User_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+INSERT INTO admin VALUES 
+('adm01', 'Faculty of Technology', 'Super');
+
+CREATE TABLE dean
+(
+Dean_id VARCHAR(10),
+S_date DATE,
+PRIMARY KEY(Dean_id),
+FOREIGN KEY (Dean_id) REFERENCES user (User_id)
+ON UPDATE CASCADE
+ON DELETE CASCADE
+);
+
+INSERT INTO dean VALUES 
+('den01', '2020-01-01');
+
+DELIMITER $$
+CREATE PROCEDURE get_attendance(
+    IN p_course_code VARCHAR(10),
+    IN p_reg_no CHAR(12),
+    IN p_session_type VARCHAR(10),  
+    IN p_show_dates BOOLEAN         
+)
+BEGIN
+    IF p_show_dates THEN
+        SELECT 
+            Reg_no, Name, C_code, C_name, Session_type, Session_Date,
+            Total_Sessions, Present_Count, Medical_Count, 
+            Attendance_Percentage, Eligibility
+        FROM vw_attendance
+        WHERE (p_course_code IS NULL OR C_code = p_course_code)
+        AND (p_reg_no IS NULL OR Reg_no = p_reg_no)
+        AND (p_session_type IS NULL OR Session_type = p_session_type)
+        AND Session_Date IS NOT NULL
+        ORDER BY Reg_no, C_code, Session_Date;
+    ELSE
+        SELECT 
+            Reg_no, Name, C_code, C_name, Session_type,
+            Total_Sessions, Present_Count, Medical_Count, 
+            Attendance_Percentage, Eligibility
+        FROM vw_attendance
+        WHERE (p_course_code IS NULL OR C_code = p_course_code)
+        AND (p_reg_no IS NULL OR Reg_no = p_reg_no)
+        AND (p_session_type IS NULL OR Session_type = p_session_type)
+        AND Session_Date IS NULL
+        ORDER BY Reg_no, C_code, Session_type;
+    END IF;
+END$$
+DELIMITER ;
+
+
+CREATE OR REPLACE VIEW view_attendance AS
+SELECT 
+    s.Stu_id,
+    s.Reg_no,
+    CONCAT(u.Fname, ' ', u.Lname) AS Name,
+    c.Course_id,
+    c.C_code,
+    c.C_name,
+    COALESCE(sess.Session_type, 'Combined') AS Session_type,
+    sess.Date AS Session_Date,
+    COUNT(DISTINCT sess.Session_id) AS Total_Sessions,
+    SUM(CASE WHEN a.Status = 'Present' THEN 1 ELSE 0 END) AS Present_Count,
+    SUM(CASE WHEN m.Approve_status = 'Approved' THEN 1 ELSE 0 END) AS Medical_Count,
+    ROUND(((SUM(CASE WHEN a.Status = 'Present' THEN 1 ELSE 0 END) + 
+            SUM(CASE WHEN m.Approve_status = 'Approved' THEN 1 ELSE 0 END)) / 
+            COUNT(DISTINCT sess.Session_id) * 100), 2) AS Attendance_Percentage,
+    CASE 
+        WHEN ((SUM(CASE WHEN a.Status = 'Present' THEN 1 ELSE 0 END) + 
+               SUM(CASE WHEN m.Approve_status = 'Approved' THEN 1 ELSE 0 END)) / 
+               COUNT(DISTINCT sess.Session_id) * 100) >= 80 
+        THEN 'Eligible' ELSE 'Not Eligible' 
+    END AS Eligibility
+FROM student s
+JOIN user u ON s.Stu_id = u.User_id
+JOIN student_course sc ON s.Stu_id = sc.Stu_id
+JOIN course c ON sc.Course_id = c.Course_id
+JOIN session sess ON c.Course_id = sess.Course_id
+LEFT JOIN attendance a ON sess.Session_id = a.Session_id AND s.Stu_id = a.Stu_id
+LEFT JOIN medical m ON s.Stu_id = m.Stu_id AND sess.Session_id = m.Session_id
+GROUP BY s.Stu_id, c.Course_id, sess.Session_type
+
+UNION ALL
+
+SELECT 
+    s.Stu_id,
+    s.Reg_no,
+    CONCAT(u.Fname, ' ', u.Lname) AS Name,
+    c.Course_id,
+    c.C_code,
+    c.C_name,
+    'Combined' AS Session_type,
+    NULL AS Session_Date,
+    COUNT(DISTINCT sess.Session_id) AS Total_Sessions,
+    SUM(CASE WHEN a.Status = 'Present' THEN 1 ELSE 0 END) AS Present_Count,
+    SUM(CASE WHEN m.Approve_status = 'Approved' THEN 1 ELSE 0 END) AS Medical_Count,
+    ROUND(((SUM(CASE WHEN a.Status = 'Present' THEN 1 ELSE 0 END) + 
+            SUM(CASE WHEN m.Approve_status = 'Approved' THEN 1 ELSE 0 END)) / 
+            COUNT(DISTINCT sess.Session_id) * 100), 2) AS Attendance_Percentage,
+    CASE 
+        WHEN ((SUM(CASE WHEN a.Status = 'Present' THEN 1 ELSE 0 END) + 
+               SUM(CASE WHEN m.Approve_status = 'Approved' THEN 1 ELSE 0 END)) / 
+               COUNT(DISTINCT sess.Session_id) * 100) >= 80 
+        THEN 'Eligible' ELSE 'Not Eligible' 
+    END AS Eligibility
+FROM student s
+JOIN user u ON s.Stu_id = u.User_id
+JOIN student_course sc ON s.Stu_id = sc.Stu_id
+JOIN course c ON sc.Course_id = c.Course_id
+JOIN session sess ON c.Course_id = sess.Course_id
+LEFT JOIN attendance a ON sess.Session_id = a.Session_id AND s.Stu_id = a.Stu_id
+LEFT JOIN medical m ON s.Stu_id = m.Stu_id AND sess.Session_id = m.Session_id
+GROUP BY s.Stu_id, c.Course_id;
+
+
+
+
+
+
+
+
+    
